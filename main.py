@@ -12,22 +12,33 @@ TOKEN_FILE = 'token.json'  # File to store the user's access and refresh tokens
 def authenticate_user():
     credentials = None
 
-    # Check if token file exists and has valid credentials
     if os.path.exists(TOKEN_FILE):
         credentials = google.auth.credentials.Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
 
-    # If there are no valid credentials, go through the authorization flow
     if not credentials or not credentials.valid:
         if credentials and credentials.expired and credentials.refresh_token:
             credentials.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'client_secrets.json', SCOPES)
-            credentials = flow.run_local_server(port=0)
 
-        # Save the credentials for the next run
-        with open(TOKEN_FILE, 'w') as token:
-            token.write(credentials.to_json())
+            # Generate the authorization URL
+            auth_url, state = flow.authorization_url(prompt='consent')
+
+            st.write('Please go to this URL and authorize access:', auth_url)
+
+            # Ask for the authorization response code
+            auth_code = st.text_input('Enter the authorization code:')
+
+            if auth_code:
+                # Use the code to fetch the access token
+                flow.fetch_token(code=auth_code)
+
+                # Save the credentials for the next run
+                with open(TOKEN_FILE, 'w') as token:
+                    token.write(credentials.to_json())
+
+            credentials = flow.credentials
 
     drive_service = build('drive', 'v3', credentials=credentials)
     return drive_service
