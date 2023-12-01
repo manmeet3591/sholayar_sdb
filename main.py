@@ -12,6 +12,7 @@ TOKEN_FILE = 'token.json'  # File to store the user's access and refresh tokens
 def authenticate_user():
     credentials = None
 
+    # Check if we already have saved credentials
     if os.path.exists(TOKEN_FILE):
         credentials = google.auth.credentials.Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
 
@@ -35,10 +36,12 @@ def authenticate_user():
                 flow.fetch_token(code=auth_code)
 
                 # Save the credentials for the next run
+                credentials = flow.credentials
                 with open(TOKEN_FILE, 'w') as token:
                     token.write(credentials.to_json())
 
-            credentials = flow.credentials
+    if not credentials:
+        raise ValueError("Failed to obtain valid credentials")
 
     drive_service = build('drive', 'v3', credentials=credentials)
     return drive_service
