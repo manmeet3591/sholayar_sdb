@@ -60,9 +60,9 @@ if username == 'balan' and password == 'balan':
       st.plotly_chart(fig_predicted)
 
       # Create download button
-    st.download_button(
-        label="Download Predicted Data as CSV",
-        data=csv,
-        file_name='predicted_bathymetry_data.csv',
-        mime='text/csv',
-    )
+      st.download_button(
+          label="Download Predicted Data as CSV",
+          data=csv,
+          file_name='predicted_bathymetry_data.csv',
+          mime='text/csv',
+      )
