@@ -25,3 +25,14 @@ if st.button('Generate Supervised Learning Dataset'):
     # Simulating data loading
     time.sleep(2)  # Waits for 1 minute
     st.success('Data loading complete. Supervised learning dataset ready for Satellite Derived Bathymetry using machine learning')
+
+# Button to train machine learning model
+if st.button('Train Machine Learning Model'):
+    # Display training message
+    st.write('Training machine learning model with satellite inputs and bathymetry survey targets...')
+    st.write('Full hyperparameter optimization using XGBoost in progress...')
+
+    # Simulate model training
+    # In a real app, replace this with actual model training code
+    time.sleep(1)  # Simulating time taken for model training
+    st.success('Model training complete.')
