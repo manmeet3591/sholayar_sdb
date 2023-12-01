@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import time
 
 # Set the title of the app
 st.title('Survey Data')
