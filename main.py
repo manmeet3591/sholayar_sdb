@@ -15,3 +15,12 @@ fig = px.scatter_mapbox(df_training, lat="lat", lon="lon", color="bathy",
 
 # Display the figure
 st.plotly_chart(fig)
+
+# Button to generate the dataset
+if st.button('Generate Supervised Learning Dataset'):
+    # Display loading message
+    st.write('Sentinel 2A, Landsat 8 data being loaded')
+
+    # Simulating data loading
+    time.sleep(2)  # Waits for 1 minute
+    st.success('Data loading complete.')
