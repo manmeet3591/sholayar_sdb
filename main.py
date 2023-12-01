@@ -24,4 +24,4 @@ if st.button('Generate Supervised Learning Dataset'):
 
     # Simulating data loading
     time.sleep(2)  # Waits for 1 minute
-    st.success('Data loading complete.')
+    st.success('Data loading complete. Supervised learning dataset ready for Satellite Derived Bathymetry using machine learning')
