@@ -11,7 +11,7 @@ df_training = pd.read_csv('https://raw.githubusercontent.com/manmeet3591/sholaya
 
 # Create Plotly figure
 fig = px.scatter_mapbox(df_training, lat="lat", lon="lon", color="bathy",
-                        color_continuous_scale=px.colors.sequential.PuBu, size_max=5, zoom=11,
+                        color_continuous_scale=px.colors.sequential.PuBu, size_max=5, zoom=10,
                         mapbox_style="carto-positron", range_color=[0, 50])
 
 # Display the figure
@@ -44,7 +44,7 @@ if st.button('Display Predicted Bathymetry Lines'):
 
     # Create Plotly figure for predicted data
     fig_predicted = px.scatter_mapbox(df_predicted, lat="y", lon="x", color="y_test_pred",
-                                      color_continuous_scale=px.colors.sequential.PuBu, size_max=5, zoom=11,
+                                      color_continuous_scale=px.colors.sequential.PuBu, size_max=5, zoom=10,
                                       mapbox_style="carto-positron", range_color=[0, 50])
 
     # Display the predicted figure
