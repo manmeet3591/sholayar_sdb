@@ -11,7 +11,7 @@ username = st.sidebar.text_input("Username")
 password = st.sidebar.text_input("Password", type='password')
 
 # Check if the username and password are correct
-if username == USERNAME and password == PASSWORD:
+if username == 'balan' and password == 'balan':
   
   # Load data
   df_training = pd.read_csv('https://raw.githubusercontent.com/manmeet3591/sholayar_sdb/main/sholayar_sentinel_landsat.csv')
