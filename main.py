@@ -1,46 +1,36 @@
 import streamlit as st
-from google_auth_oauthlib.flow import Flow
+from google_auth_oauthlib.flow import Flow, InstalledAppFlow
 from googleapiclient.discovery import build
-import google.auth
 import os
 
 # Use Streamlit's secrets management
 CLIENT_ID = st.secrets["GOOGLE_CLIENT_ID"]
 CLIENT_SECRET = st.secrets["GOOGLE_CLIENT_SECRET"]
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
+TOKEN_FILE = 'token.json'  # File to store the user's access and refresh tokens
 
 def authenticate_user():
-    # Create a flow instance to manage the OAuth 2.0 Authorization Grant Flow steps
-    flow = Flow.from_client_config(
-        client_config={
-            "web": {
-                "client_id": CLIENT_ID,
-                "client_secret": CLIENT_SECRET,
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://accounts.google.com/o/oauth2/token"
-            }
-        },
-        scopes=SCOPES,
-        redirect_uri="http://localhost:8501"
-    )
+    credentials = None
 
-    # Generate the authorization URL
-    auth_url, state = flow.authorization_url(prompt='consent')
+    # Check if token file exists and has valid credentials
+    if os.path.exists(TOKEN_FILE):
+        credentials = google.auth.credentials.Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
 
-    st.write('Please go to this URL and authorize access:', auth_url)
+    # If there are no valid credentials, go through the authorization flow
+    if not credentials or not credentials.valid:
+        if credentials and credentials.expired and credentials.refresh_token:
+            credentials.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'client_secrets.json', SCOPES)
+            credentials = flow.run_local_server(port=0)
 
-    # Ask for the authorization response URL
-    auth_response = st.text_input('Enter the full URL you were redirected to:')
+        # Save the credentials for the next run
+        with open(TOKEN_FILE, 'w') as token:
+            token.write(credentials.to_json())
 
-    if auth_response:
-        # Use the response URL to fetch the access token
-        flow.fetch_token(authorization_response=auth_response)
-
-        # Use the access token to build the Google Drive service
-        credentials = flow.credentials
-        drive_service = build('drive', 'v3', credentials=credentials)
-        return drive_service
-    return None
+    drive_service = build('drive', 'v3', credentials=credentials)
+    return drive_service
 
 def list_drive_files(drive_service):
     # Call the Drive v3 API
