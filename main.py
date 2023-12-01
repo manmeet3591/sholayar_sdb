@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import time
+from io import StringIO
 
 # Set the title of the app
 st.title('Satellite Derived Bathymetry')
@@ -59,10 +60,15 @@ if username == 'balan' and password == 'balan':
       # Display the predicted figure
       st.plotly_chart(fig_predicted)
 
-      # Create download button
-      st.download_button(
-          label="Download Predicted Data as CSV",
-          data=csv,
-          file_name='predicted_bathymetry_data.csv',
-          mime='text/csv',
-      )
+    # Convert DataFrame to CSV string using StringIO
+    csv_buffer = StringIO()
+    df_predicted.to_csv(csv_buffer, index=False)
+    csv_buffer.seek(0)
+
+    # Create download button
+    st.download_button(
+        label="Download Predicted Data as CSV",
+        data=csv_buffer,
+        file_name='predicted_bathymetry_data.csv',
+        mime='text/csv',
+    )
