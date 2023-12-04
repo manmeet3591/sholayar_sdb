@@ -53,7 +53,7 @@ if username == 'balan' and password == 'balan':
   
       # Create Plotly figure for predicted data
       fig_predicted = px.scatter_mapbox(df_predicted, lat="y", lon="x", color="y_test_pred",
-                                        color_continuous_scale=px.colors.sequential.PuBu, size_max=5, zoom=10,
+                                        color_continuous_scale=px.colors.sequential.Viridis_r, size_max=5, zoom=10,
                                         mapbox_style="carto-positron", range_color=[0, 50])
       fig_predicted.update_layout(title_text='Generated bathymetric lines')
   
