@@ -19,7 +19,7 @@ if username == 'balan' and password == 'balan':
   
   # Create Plotly figure
   fig = px.scatter_mapbox(df_training, lat="lat", lon="lon", color="bathy",
-                          color_continuous_scale=px.colors.sequential.Viridis, size_max=5, zoom=10,
+                          color_continuous_scale=px.colors.sequential.Viridis_r, size_max=5, zoom=10,
                           mapbox_style="carto-positron", range_color=[0, 50])
   fig.update_layout(title_text='Bathymetric Survey')
   
